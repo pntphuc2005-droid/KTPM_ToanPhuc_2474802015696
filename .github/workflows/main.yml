@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   api-tests:
@@ -25,22 +24,7 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
-      - name: Verify files
-        run: |
-          pwd
-          ls -la
-
       - name: Run Newman Tests
         run: |
-          newman run "RestfulBooker.postman_collection.json" \
-          -e "RestfulBooker.postman_environment.json" \
-          -d "booking data.csv" \
-          --reporters cli,junit \
-          --reporter-junit-export newman-report.xml
-
-      - name: Upload Test Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: newman-report
-          path: newman-report.xml
+          newman run RestfulBooker.postman_collection.json \
+          -e RestfulBooker.postman_environment.json
